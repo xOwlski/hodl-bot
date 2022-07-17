@@ -29,8 +29,15 @@ class OnboardingCog(commands.Cog):
         # allow only messages from DM
         if message.guild:
             return None
+        print('building')
         # check if users is already staking
-        is_already_staking = await User.exists(Q(id=message.author.id) & Q(is_staking=True))
+        is_already_staking = False
+        try:
+            is_already_staking = await User.exists(Q(id=message.author.id) & Q(is_staking=True))
+        except Exception as e:
+            print(e)
+            print("An exception occurred")
+        print('success')
         if is_already_staking:
             buttons = [
                 create_button(style=ButtonStyle.red, label="Yes", custom_id="continue_staking_no"),
